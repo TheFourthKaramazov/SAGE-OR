@@ -1,0 +1,9 @@
+[submodule "external/dinov3"]
+	path = external/dinov3
+	url = https://github.com/facebookresearch/dinov3.git
+[submodule "external/pi3"]
+	path = external/pi3
+	url = https://github.com/yyfz/Pi3.git
+[submodule "external/sam3"]
+	path = external/sam3
+	url = https://github.com/facebookresearch/sam3.git

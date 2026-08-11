@@ -1,0 +1,32 @@
+# Core ML dependencies (PyTorch installed separately via conda/pip)
+# pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+torchvision  # Ensure it's installed (ResNet, EfficientNet backbones)
+
+# pi3 dependencies
+huggingface_hub
+safetensors
+
+# Dataset processing
+pandas
+tqdm
+pyyaml
+
+# Visualization and point cloud processing
+plyfile
+open3d
+matplotlib
+
+# ML utilities
+scikit-learn
+
+# Visual encoders
+transformers  # CLIP, BERT for temporal history encoding
+timm  # EfficientNet-B5-NS and other vision models
+
+# SAM3 extra dependencies (not in pyproject.toml)
+einops
+setuptools<70  # for pkg_resources
+
+# Local packages (editable installs)
+# [notebooks] extra includes: decord, pycocotools, opencv-python, etc.
+-e external/sam3[notebooks]

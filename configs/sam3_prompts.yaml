@@ -1,0 +1,54 @@
+# SAM3 Prompt Configuration
+# Each prompt can specify resolution, confidence threshold, and GT mapping
+
+# Output resolution (all masks resized to this)
+output_resolution: [392, 518]  # [H, W] - matches Pi3
+
+# Prompts configuration
+prompts:
+  person:
+    text: "person"
+    resolution: "low"      # low=518x392, high=2048x1536
+    confidence: 0.3
+    gt_categories:         # Maps to these GT categories for evaluation
+      - "Patient"
+      - "human_0"
+      - "human_1"
+      - "human_2"
+      - "human_3"
+      - "human_4"
+      - "human_5"
+
+  table:
+    text: "medical table"
+    resolution: "low"      # Large objects - better at low res
+    confidence: 0.3
+    gt_categories:
+      - "instrument_table"
+      - "operating_table"
+      - "secondary_table"
+
+  anesthesia:
+    text: "anesthesia equipment"
+    resolution: "low"
+    confidence: 0.3
+    gt_categories:
+      - "anesthesia_equipment"
+
+  tool:
+    text: "tool in hand"
+    resolution: "high"     # Small objects - need high res
+    confidence: 0.01       # Very low - SAM3 struggles with small instruments
+    gt_categories:
+      - "instrument"
+
+  hand:
+    text: "hand"
+    resolution: "high"     # Small objects - need high res
+    confidence: 0.3
+    gt_categories: []      # No GT equivalent
+
+# Resolution definitions
+resolutions:
+  low: [392, 518]          # Processed image size
+  high: [1536, 2048]       # Original image size

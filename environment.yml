@@ -1,0 +1,37 @@
+name: ssg
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  # Python 3.12 for SAM3 compatibility
+  - python=3.12
+
+  # System-level scientific computing
+  - numpy>=1.26.0,<2
+  - scipy>=1.10.0
+  - opencv>=4.8.0
+  - pillow>=9.5.0
+
+  # Development and system utilities
+  - git
+  - git-lfs
+  - psutil>=5.9.0
+  - pip
+
+  # Pip dependencies (see requirements.txt for details)
+  - pip:
+    - -r requirements.txt
+
+# ============================================================================
+# IMPORTANT: PyTorch must be installed AFTER conda env creation
+# ============================================================================
+# Run this after `conda env create -f environment.yml`:
+#
+#   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+#
+# This ensures CUDA 12.6 compatibility. Adjust cu126 to match your CUDA version:
+#   - cu118 for CUDA 11.8
+#   - cu121 for CUDA 12.1
+#   - cu126 for CUDA 12.6
+# ============================================================================

@@ -1,0 +1,91 @@
+data:
+  manifest_path: "processed_data/manifest.csv"
+  pi3_cache_dir: "caches/4d_or_cache"
+  sam3_cache_dir: "caches/sam3_masks"
+  feature_cache_dir: "caches/features_dinov3_vitl16"
+  gt_dir: "data/4D-OR/OR_4D_data"
+
+model:
+  visual_feat_dim: 1024
+  geometric_feat_dim: 13 # should be 13 for feature cache generation and 3 for training
+  category_hint_dim: 5
+  use_category_hints: true
+  use_visual_features: true
+
+  transformer:
+    hidden_dim: 384
+    num_heads: 6
+    num_layers: 4
+    dropout: 0.3
+    use_edge_features: true
+    positional_encoding: "3d"
+
+  node_head:
+    hidden_dim: 256
+    num_classes: 12
+
+  edge_head:
+    hidden_dim: 512
+    num_relations: 15
+    num_layers: 2
+    num_heads: 4
+    use_object_types: true
+    use_node_class_priors: true
+    use_visual_edge_features: false
+    visual_edge_dim: 512
+    use_pairwise_geometry: true
+
+fusion:
+  conf_threshold: 0.1
+  min_points: 10
+  iou_threshold: 0.15
+
+features:
+  dino_model: "dinov3_vitl16"
+  aggregation: "mean"
+
+augmentation:
+  enabled: true
+  subgraph_sampling:
+    enabled: true
+    min_keep_ratio: 0.5
+    max_keep_ratio: 0.9
+  feature_dropout:
+    enabled: false
+  node_dropout:
+    enabled: false
+
+training:
+  seed: 2
+  learning_rate: 3e-5
+  weight_decay: 0.0001
+  batch_size: 4
+  num_workers: 12
+  num_epochs: 250
+
+  scheduler:
+    type: "cosine"
+    warmup_epochs: 10
+    min_lr: 1e-7
+
+  loss_weights:
+    node: 1.0
+    edge: 2.0
+    no_relation: 0.0001
+
+  balanced_weights: true
+  proxy_task:
+    enabled: true
+    weight: 1.0
+  hungarian_matching: true
+
+  early_stopping:
+    patience: 100
+    metric: "scene_graph_f1"
+
+logging:
+  experiment_name: "sage_or"
+  output_dir: "outputs"
+  checkpoint_dir: "checkpoints"
+  log_every: 10
+  save_every: 1
