@@ -178,7 +178,7 @@ If you use this code, please cite our paper (to appear; arXiv version coming soo
 }
 ```
 
-If you use the 4D-OR benchmark, please also cite:
+If you use the 4D-OR benchmark, please consider citing:
 
 ```bibtex
 @inproceedings{ozsoy20224dor,
