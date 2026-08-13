@@ -1,4 +1,4 @@
-name: ssg
+name: sage-or
 channels:
   - conda-forge
   - defaults
@@ -23,15 +23,3 @@ dependencies:
   - pip:
     - -r requirements.txt
 
-# ============================================================================
-# IMPORTANT: PyTorch must be installed AFTER conda env creation
-# ============================================================================
-# Run this after `conda env create -f environment.yml`:
-#
-#   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
-#
-# This ensures CUDA 12.6 compatibility. Adjust cu126 to match your CUDA version:
-#   - cu118 for CUDA 11.8
-#   - cu121 for CUDA 12.1
-#   - cu126 for CUDA 12.6
-# ============================================================================

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAGE-OR: Semi-supervised Adaptive Scene Graph Generation for Operating Rooms</title>
+<meta name="description" content="SAGE-OR (BMVC 2026): a feature-centric, RGB-only scene graph generation framework for operating rooms that eliminates localization supervision.">
+<style>
+  :root{
+    --ink:#15202b; --muted:#5b6b7a; --line:#e5e9ee; --bg:#ffffff; --soft:#f6f8fa;
+    --accent:#0f766e; --accent-2:#0d5c56; --chip:#eef4f3;
+    --maxw:900px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; color:var(--ink); background:var(--bg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6; font-size:17px;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px}
+  h1,h2,h3{line-height:1.25; color:var(--ink)}
+  h2{font-size:1.5rem; margin:2.6rem 0 1rem; padding-bottom:.4rem; border-bottom:1px solid var(--line)}
+  h3{font-size:1.1rem; margin:1.6rem 0 .4rem}
+  p{margin:.7rem 0}
+  code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+  /* Hero */
+  header.hero{
+    background:linear-gradient(180deg,#f3f8f7 0%,#ffffff 100%);
+    border-bottom:1px solid var(--line);
+    padding:56px 0 40px; text-align:center;
+  }
+  .venue{display:inline-block; font-size:.8rem; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--accent-2); background:var(--chip); border:1px solid #d8e6e3;
+    padding:4px 12px; border-radius:999px; font-weight:600}
+  .hero h1{font-size:2.15rem; margin:.7rem auto .3rem; max-width:20ch}
+  .authors{font-size:1.08rem; margin:.5rem 0 .1rem}
+  .authors a{color:var(--ink); border-bottom:1px dotted var(--muted)}
+  .affil{color:var(--muted); font-size:.98rem; margin:.2rem 0 1.2rem}
+  .btns{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:14px}
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:10px;
+    background:var(--ink); color:#fff; font-weight:600; font-size:.95rem; border:1px solid var(--ink)}
+  .btn:hover{text-decoration:none; background:#0b1620}
+  .btn.ghost{background:#fff; color:var(--ink); border-color:var(--line)}
+  .btn.ghost:hover{background:var(--soft)}
+  .btn.disabled{background:#eef1f4; color:#9aa7b3; border-color:var(--line); cursor:default}
+
+  /* Highlights */
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:8px}
+  .card{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:16px}
+  .card .big{font-size:1.5rem; font-weight:700; color:var(--accent-2)}
+  .card .lab{font-size:.9rem; color:var(--muted)}
+
+  /* Figures */
+  figure{margin:1.4rem 0; text-align:center}
+  figure img{max-width:100%; height:auto; border:1px solid var(--line); border-radius:10px; background:#fff}
+  figcaption{font-size:.9rem; color:var(--muted); margin-top:.6rem; text-align:left}
+
+  .abstract{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 20px}
+
+  /* Compare table */
+  .tablewrap{overflow-x:auto}
+  table{border-collapse:collapse; width:100%; font-size:.95rem; margin-top:.4rem}
+  th,td{padding:9px 12px; border-bottom:1px solid var(--line); text-align:left}
+  th{background:var(--soft); font-weight:600}
+  td.num,th.num{text-align:right; font-variant-numeric:tabular-nums}
+  tr.ours{background:#f0f8f6}
+  tr.ours td{font-weight:600}
+
+  /* Downloads */
+  .dl{display:grid; grid-template-columns:1fr; gap:10px}
+  .dl a.row{display:flex; justify-content:space-between; align-items:center; gap:12px;
+    border:1px solid var(--line); border-radius:10px; padding:12px 14px; color:var(--ink); background:#fff}
+  .dl a.row:hover{background:var(--soft); text-decoration:none}
+  .dl .name{font-weight:600}
+  .dl .meta{color:var(--muted); font-size:.9rem}
+  .dl .size{color:var(--accent-2); font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap}
+
+  pre.bib{background:#0f172a; color:#e2e8f0; border-radius:12px; padding:16px 18px; overflow-x:auto; font-size:.86rem; line-height:1.5}
+
+  footer{border-top:1px solid var(--line); margin-top:40px; padding:26px 0 44px; color:var(--muted); font-size:.92rem}
+  .note{font-size:.9rem; color:var(--muted)}
+
+  @media (max-width:680px){
+    .hero h1{font-size:1.7rem}
+    .cards{grid-template-columns:1fr 1fr}
+    body{font-size:16px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="venue">BMVC 2026</span>
+    <h1>SAGE-OR: Semi-supervised Adaptive Scene Graph Generation for Operating Rooms</h1>
+    <div class="authors">
+      <a href="mailto:bran.leblanc@mail.concordia.ca">Brandon Leblanc</a> &nbsp;·&nbsp;
+      <a href="mailto:charalambos.poullis@concordia.ca">Charalambos Poullis</a>
+    </div>
+    <div class="affil">Immersive and Creative Technologies (ICT) Lab · Concordia University · Montreal, Canada</div>
+    <div class="btns">
+      <span class="btn disabled" title="Link coming soon">📄 Paper (soon)</span>
+      <span class="btn disabled" title="Link coming soon">📚 arXiv (soon)</span>
+      <a class="btn ghost" href="https://github.com/TheFourthKaramazov/SAGE-OR">💻 Code</a>
+      <a class="btn ghost" href="#downloads">⬇️ Data &amp; Models</a>
+      <a class="btn ghost" href="#bibtex">❝ BibTeX</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <h2>Overview</h2>
+    <div class="cards">
+      <div class="card"><div class="big">76 → 86%</div><div class="lab">Relation F1 on 4D-OR (core → +unsupervised hands)</div></div>
+      <div class="card"><div class="big">RGB only</div><div class="lab">No depth, poses, boxes, or point-cloud labels</div></div>
+      <div class="card"><div class="big">15M</div><div class="lab">Trainable params — 4× smaller than prior work</div></div>
+      <div class="card"><div class="big">1.4 h</div><div class="lab">Training on a single commodity GPU</div></div>
+      <div class="card"><div class="big">~1 ms</div><div class="lab">Relational inference per frame (~1000 FPS on cached features)</div></div>
+      <div class="card"><div class="big">&lt; 2 GB</div><div class="lab">Peak memory — deployable on OR edge hardware</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Abstract</h2>
+    <div class="abstract">
+      <p>Current surgical scene graph generation methods depend on dense multi-modal supervision and specialized
+      hardware (synchronized RGB-D sensors, calibration rigs), making dataset construction expensive and restricting
+      all existing benchmarks to simulated environments. We propose <strong>SAGE-OR</strong>, a feature-centric
+      framework that replaces the traditional detect-then-reason paradigm with a decoupled representation-reasoning
+      paradigm in which localization is derived from frozen foundation models, encoded implicitly in pre-computed
+      features, and used <em>without any localization supervision</em>, while a lightweight graph transformer performs
+      relational reasoning over cached features. We employ a semi-supervised formulation with general-purpose
+      segmentation prompts to eliminate localization supervision while enabling <em>unsupervised context augmentation</em>
+      through additional prompt-driven entities, such as hands, which are absent from annotations. General-purpose
+      prompts induce near-perfect recall, while precision is delegated to downstream attention-based reasoning,
+      enabling simple adaptation to new entities via prompt-level modification. This design enables a lightweight
+      15M-parameter graph transformer that trains in 1.4&nbsp;hours and runs relational inference at ~1&nbsp;ms per
+      frame with peak memory under 2&nbsp;GB, suitable for edge hardware used in the operating room; feature extraction
+      runs offline as a separate caching stage (4.27&nbsp;s per frame). On the 4D-OR benchmark, the core model achieves
+      76%&nbsp;F1, matching the fully supervised 4D-OR baseline while eliminating all localization annotations, and
+      unsupervised hand augmentation raises this to 86%&nbsp;F1 — within 4 points of state-of-the-art methods requiring
+      dense multi-modal supervision.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Method</h2>
+    <p>SAGE-OR splits scene graph generation into a one-time <strong>feature-caching stage</strong> over frozen
+    foundation models and a lightweight <strong>graph-reasoning stage</strong> — so localization never needs to be
+    supervised, and the visual encoder can be swapped by regenerating only the cache.</p>
+
+    <h3>1 · Decoupled feature caching</h3>
+    <figure>
+      <img src="assets/pipeline_caching.png" alt="Three-stage caching pipeline: Pi3 geometry, SAM3 segmentation, instance fusion, DINOv3 hybrid features.">
+      <figcaption><strong>Figure 1.</strong> The 3-stage decoupled caching pipeline. <strong>Pi3</strong> produces
+      per-frame pointmaps and camera poses from RGB alone; <strong>SAM3</strong> gives open-vocabulary masks from
+      general prompts (<em>person, tool, medical table, anesthesia equipment, hand</em>); category-constrained 3D-IoU
+      <strong>instance fusion</strong> merges masks across views; and <strong>DINOv3</strong> hybrid extraction pools
+      features (low-res for large entities, high-res crops for small tools/hands). All models are frozen; the resulting
+      ~2&nbsp;KB/instance cache is reused across all training and inference.</figcaption>
+    </figure>
+
+    <h3>2 · Graph reasoning without localization supervision</h3>
+    <figure>
+      <img src="assets/pipeline_training.png" alt="Graph transformer with edge-aware attention, edge transformer, and Hungarian matching.">
+      <figcaption><strong>Figure 2.</strong> Cached features are projected and given a 3D sinusoidal positional
+      encoding, then contextualized by an edge-aware graph transformer (3D-distance-biased attention). A node head
+      classifies entities while an edge transformer performs cross-edge relational reasoning; a proxy head predicts
+      frame-level relation presence. <strong>Hungarian matching</strong> aligns predictions to ground-truth entities
+      with no localization labels, and subgraph sampling regularizes training.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Qualitative results</h2>
+
+    <h3>Open-vocabulary segmentation across 6 views</h3>
+    <figure>
+      <img src="assets/qual_segmentation.png" alt="SAM3 instance masks color-coded by category, overlaid on all six camera views for several frames.">
+      <figcaption><strong>General-purpose prompts give near-perfect recall.</strong> SAM3 instance masks (color-coded
+      by category) overlaid on all six camera views. Because entities are fused in 3D across views, a miss in one camera
+      is recovered from another — precision is then delegated to the downstream graph transformer.</figcaption>
+    </figure>
+
+    <h3>RGB-only 3D vs. depth sensors</h3>
+    <figure>
+      <img src="assets/pi3_vs_depth.png" alt="Pi3 RGB-only reconstruction versus 4D-OR depth-sensor point clouds on matched frames.">
+      <figcaption><strong>Pi3 reconstructs denser scenes from RGB alone.</strong> Zero-shot Pi3 reconstruction (left)
+      vs. the calibrated 4D-OR depth-sensor point clouds (right) on matched frames — no depth sensors, calibration, or
+      camera poses required, yet dense enough for reliable per-entity centroid extraction.</figcaption>
+    </figure>
+
+    <h3>Multi-view instance fusion</h3>
+    <figure>
+      <img src="assets/fusion_results.png" alt="Instances colored by fused cluster ID alongside the fused multi-view point cloud.">
+      <figcaption><strong>Category-constrained 3D-IoU fusion.</strong> Left: instances colored by fused cluster ID;
+      right: the fused multi-view point cloud. Adaptive voxelization keeps fusion robust to Pi3's arbitrary global
+      scale, and the extracted 3D centroids become geometric features for the graph transformer.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>How it compares</h2>
+    <p>Unlike prior OR scene-graph methods, SAGE-OR needs only RGB images and relationship/class labels — no
+    synchronized RGB-D, 6-DoF poses, 3D boxes, or point clouds. It matches the fully-supervised 4D-OR baseline and,
+    with <em>unsupervised</em> hand augmentation, comes within 4 points of the best fully-supervised methods while
+    training a 4× smaller model.</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Method</th><th>Supervision</th><th class="num">Params</th><th class="num">Relation F1</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>4D-OR (baseline)</td><td>Full multi-modal</td><td class="num">84.8M</td><td class="num">~75%</td></tr>
+          <tr><td>S²Former-OR</td><td>Full multi-modal</td><td class="num">60.6M</td><td class="num">89%</td></tr>
+          <tr class="ours"><td>SAGE-OR (core)</td><td>RGB + labels only</td><td class="num">15M</td><td class="num">76%</td></tr>
+          <tr class="ours"><td>SAGE-OR (+ unsup. hands)</td><td>RGB + labels only</td><td class="num">15M</td><td class="num">86%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Macro-averaged relation F1 on the 4D-OR test set. See the paper for full per-class results,
+    the systematic visual-encoder comparison, and ablations.</p>
+  </section>
+
+  <section id="downloads">
+    <h2>Data &amp; models</h2>
+    <p>Inference and training need only the <strong>Checkpoint</strong> + <strong>Caches</strong> (~440&nbsp;MB total).
+    The 4D-OR data package is only for regenerating caches from scratch. See the
+    <a href="https://github.com/TheFourthKaramazov/SAGE-OR#downloads">repository README</a> for setup and extraction steps.</p>
+    <div class="dl">
+      <a class="row" href="https://drive.google.com/file/d/1sEuudU6quLqTaS8nmYxwMElXgLabzSmW/view?usp=drive_link">
+        <span><span class="name">Pretrained checkpoint</span><br><span class="meta">sage_or.pt → checkpoints/</span></span>
+        <span class="size">157 MB</span>
+      </a>
+      <a class="row" href="https://drive.google.com/file/d/1MGO2Xg0GApPJPeqTrVnrdOXASLQg3k0i/view?usp=drive_link">
+        <span><span class="name">Caches</span><br><span class="meta">feature cache + GT labels — enough to run/train</span></span>
+        <span class="size">286 MB</span>
+      </a>
+      <a class="row" href="https://drive.google.com/file/d/1Q9KiPxQPdOee_UP030KKl_g4l6ERdYRe/view?usp=drive_link">
+        <span><span class="name">4D-OR data (condensed, RGB-only)</span><br><span class="meta">our RGB-only 4D-OR (26 GB vs 163 GB original) — for regenerating caches</span></span>
+        <span class="size">25 GB</span>
+      </a>
+    </div>
+    <p class="note">DINOv3 weights are Meta-gated and only needed to regenerate caches — see the README.</p>
+  </section>
+
+  <section id="bibtex">
+    <h2>Citation</h2>
+    <pre class="bib">@inproceedings{leblanc2026sageor,
+  title     = {SAGE-OR: Semi-supervised Adaptive Scene Graph Generation for Operating Rooms},
+  author    = {Leblanc, Brandon and Poullis, Charalambos},
+  booktitle = {Proceedings of the British Machine Vision Conference (BMVC)},
+  year      = {2026}
+}</pre>
+  </section>
+
+  <section>
+    <h2>Acknowledgments</h2>
+    <p>SAGE-OR builds on
+    <a href="https://github.com/yyfz/Pi3">Pi3</a>,
+    <a href="https://github.com/facebookresearch/sam3">SAM 3</a>,
+    <a href="https://github.com/facebookresearch/dinov3">DINOv3</a>,
+    <a href="https://github.com/egeozsoy/LABRAD-OR">LABRAD-OR</a>, and the
+    <a href="https://github.com/egeozsoy/4D-OR">4D-OR</a> dataset. We thank their authors for making their work
+    publicly available.</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Immersive and Creative Technologies (ICT) Lab, Concordia University ·
+    <a href="https://github.com/TheFourthKaramazov/SAGE-OR">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>
