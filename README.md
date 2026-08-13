@@ -4,7 +4,7 @@
 
 Concordia University, ICT Lab
 
-**Paper** (BMVC 2026 — to appear) · **arXiv** (coming soon) · [**Project Page**](#)
+**Paper** (BMVC 2026 — to appear) · **arXiv** (coming soon) · [**Project Page**](https://thefourthkaramazov.github.io/SAGE-OR/)
 
 ---
 
