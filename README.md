@@ -58,7 +58,7 @@ Hosted on Google Drive as three packages. **Inference and training need only the
 | **Caches** (feature cache + GT labels) | 286 MB | [Google Drive](https://drive.google.com/file/d/1MGO2Xg0GApPJPeqTrVnrdOXASLQg3k0i/view?usp=drive_link) | repo root → `caches/`, `data/4D-OR/OR_4D_data/` |
 | **4D-OR data** (condensed, RGB-only) | 25 GB | [Google Drive](https://drive.google.com/file/d/1Q9KiPxQPdOee_UP030KKl_g4l6ERdYRe/view?usp=drive_link) | into `data/` → `data/4D-OR/` |
 
-The 4D-OR package is our condensed, RGB-only version of [4D-OR](https://github.com/egeozsoy/4D-OR) (26 GB vs 163 GB original) — sufficient for RGB-only methods like SAGE-OR. DINOv3 weights are separate and Meta-gated (Installation step 3), and only needed to regenerate caches.
+The 4D-OR package is our condensed, RGB-only version of [4D-OR](https://github.com/egeozsoy/4D-OR) (25 GB vs 163 GB original). Sufficient for RGB-only methods like SAGE-OR. DINOv3 weights are separate and Meta-gated (Installation step 3), and only needed to regenerate caches.
 
 ---
 
