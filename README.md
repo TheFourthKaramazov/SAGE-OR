@@ -178,16 +178,6 @@ If you use this code, please cite our paper (to appear; arXiv version coming soo
 }
 ```
 
-If you use the 4D-OR benchmark, please consider citing:
-
-```bibtex
-@inproceedings{ozsoy20224dor,
-  title={4D-OR: Semantic Scene Graphs for OR Domain Modeling},
-  author={Özsoy, Ege and Örnek, Evin Pınar and Eck, Ulrich and Czempiel, Tobias and Tombari, Federico and Navab, Nassir},
-  booktitle={International Conference on Medical Image Computing and Computer-Assisted Intervention (MICCAI)},
-  year={2022}
-}
-```
 
 The models and prior work we build on are credited under [Acknowledgments](#acknowledgments).
 
