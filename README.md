@@ -64,7 +64,7 @@ The 4D-OR package is our condensed, RGB-only version of [4D-OR](https://github.c
 
 ## Quick Start: Inference Only
 
-Download the **Checkpoint** and **Caches** packages ([Downloads](#downloads)) and extract both at the repo root, then run evaluation:
+Download the **Checkpoint** and **Caches** packages ([Downloads](#downloads)) and extract both at the repo root, then run evaluation (Note: Ensure to change geometric_feature_dim from 13 to 3 in the config.):
 ```bash
 python -m src.eval.evaluate --config configs/real-or.yaml --checkpoint checkpoints/sage_or.pt
 ```
@@ -128,6 +128,7 @@ python -m src.dataset.feature_cache_generator --config configs/real-or.yaml --ou
 ### Step 5: Train
 
 ```bash
+# Note: Ensure to change geometric_feature_dim from 13 to 3 in the config.
 python -m src.training.train_scene_graph --config configs/real-or.yaml
 ```
 
